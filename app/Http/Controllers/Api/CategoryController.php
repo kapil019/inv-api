@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +38,7 @@ class CategoryController extends ApiController
         return $this->respond([
             'status' => $data ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -55,7 +55,7 @@ class CategoryController extends ApiController
         return $this->respond([
             'status' => $data ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -77,7 +77,7 @@ class CategoryController extends ApiController
         return $this->respond([
             'status' => ($data) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -101,7 +101,7 @@ class CategoryController extends ApiController
         return $this->respond([
             'status' => ($data) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -116,7 +116,7 @@ class CategoryController extends ApiController
         return $this->respond([
             'status' => ($data) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 

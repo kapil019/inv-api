@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Solarium\Client as SolrClient;
 use Solarium\Core\Client\Adapter\Curl;

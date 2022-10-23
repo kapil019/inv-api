@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Company;
+use App\Models\Customer;
 
-class CompanyController extends ApiController
+class CustomerController extends ApiController
 {
     const FAILURE_MESSAGE = "Records not found. Please try again later";
 
     private $error = "Error while creating. Please try";
-    private $rule = [
+    private $rule = array(
         'name' => 'required',
         'email' => 'required',
         'phone' => 'required',
-        'gstNumber' => 'required'
-    ];
+        'addressLine1' => 'required',
+        'companyId' => 'required'
+    );
     private $ruleMessage = [];
 
     /**
@@ -32,15 +33,16 @@ class CompanyController extends ApiController
     public function getAll(Request $request)
     {
         $msg = null;
-        $data = Company::select([
+        $data = Customer::select([
             'id',
             'name',
             'phone',
             'email',
-            'gst_number as gstNumber',
+            'state_id as stateId',
+            'city_id as cityId',
             'address_line_1 as addressLine1',
             'address_line_2 as addressLine2',
-            'logo_path as logoPath',
+            'pincode',
             'status'
         ])->SimplePaginate($this->perPage);
         if ($data->isEmpty()) {
@@ -49,7 +51,7 @@ class CompanyController extends ApiController
         return $this->respond([
             'status' => $data ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -57,15 +59,16 @@ class CompanyController extends ApiController
         $data = null;
         $msg = null;
         try {
-            $data = Company::select([
+            $data = Customer::select([
                 'id',
                 'name',
                 'phone',
                 'email',
-                'gst_number as gstNumber',
+                'state_id as stateId',
+                'city_id as cityId',
                 'address_line_1 as addressLine1',
                 'address_line_2 as addressLine2',
-                'logo_path as logoPath',
+                'pincode',
                 'status'
             ])->findOrFail($id);
             $msg = null;
@@ -76,39 +79,40 @@ class CompanyController extends ApiController
         return $this->respond([
             'status' => $data ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
     public function create(Request $request) {
         $data = null;
         $msg = $this->error;
-
         try {
             $validator = Validator::make($request->all(), $this->rule, $this->ruleMessage);
             if ($validator->fails()) {
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
-                $company = new Company();
-                $company->name =  $request->name;
-                $company->email =  $request->email;
-                $company->phone =  $request->phone;
-                $company->gst_number =  $request->gstNumber;
-                $company->logo_path =  $request->logoPath ?? "";
-                $company->address_line_1 =  $request->addressLine1 ?? "";
-                $company->address_line_2 =  $request->addressLine2 ?? "";
-                $company->status =  $request->status ?? 1;
-                $company->save();
-                $msg = "Company created successfully";
+                $customer = new Customer();
+                $customer->name =  $request->name;
+                $customer->email =  $request->email;
+                $customer->phone =  $request->phone;
+                $customer->company_id =  $request->companyId;
+                $customer->state_id =  $request->stateId ?? null;
+                $customer->city_id =  $request->cityId ?? null;
+                $customer->address_line_1 =  $request->addressLine1 ?? "";
+                $customer->address_line_2 =  $request->addressLine2 ?? "";
+                $customer->pincode =  $request->pincode ?? null;
+                $customer->status =  $request->status ?? 1;
+                $customer->save();
+                $msg = "Customer created successfully";
             }
         } catch (\Exception  $e) {
             $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = $this->error;
         }
         return $this->respond([
-            'status' => ($company) ? true : false,
+            'status' => ($customer) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -116,53 +120,56 @@ class CompanyController extends ApiController
         $data = null;
         $msg = $this->error;
         try {
-            $company = Company::findOrFail($id);
+            $customer = Customer::findOrFail($id);
             $validator = Validator::make($request->all(), $this->rule, $this->ruleMessage);
             if ($validator->fails()) {
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $company->name =  $request->name;
+                    $customer->name =  $request->name;
                 }
                 if (!empty($request->email)) {
-                    $company->email =  $request->email;
+                    $customer->email =  $request->email;
                 }
                 if (!empty($request->phone)) {
-                    $company->phone =  $request->phone;
+                    $customer->phone =  $request->phone;
                 }
-                if (!empty($request->gstNumber)) {
-                    $company->gst_number =  $request->gstNumber;
+                if (!empty($request->stateId)) {
+                    $customer->state_id =  $request->stateId;
                 }
-                if (!empty($request->logoPath)) {
-                    $company->logo_path =  $request->logoPath;
+                if (!empty($request->cityId)) {
+                    $customer->city_id =  $request->cityId;
                 }
                 if (!empty($request->addressLine1)) {
-                    $company->address_line_1 =  $request->addressLine1;
+                    $customer->address_line_1 =  $request->addressLine1;
                 }
                 if (!empty($request->addressLine2)) {
-                    $company->address_line_2 =  $request->addressLine2;
+                    $customer->address_line_2 =  $request->addressLine2;
+                }
+                if (!empty($request->pincode)) {
+                    $customer->pincode =  $request->pincode;
                 }
                 if (isset($request->status)) {
-                    $company->status =  $request->status;
+                    $customer->status =  $request->status;
                 }
-                $company->save();
-                $msg = "Company updated successfully";
+                $customer->save();
+                $msg = "Customer updated successfully";
             }
         } catch (\Exception  $e) {
             $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = self::FAILURE_MESSAGE;
         }
         return $this->respond([
-            'status' => ($company) ? true : false,
+            'status' => ($customer) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
     public function delete($id) {
         $data = false;
         try {
-            $data = Company::findOrFail($id)->delete();
+            $data = Customer::findOrFail($id)->delete();
             $msg = "Record deleted successfully";
         } catch (\Exception $e) {
             $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
@@ -171,7 +178,7 @@ class CompanyController extends ApiController
         return $this->respond([
             'status' => ($data) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 

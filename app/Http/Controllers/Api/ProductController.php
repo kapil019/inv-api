@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 
 class ProductController extends ApiController
@@ -33,13 +34,14 @@ class ProductController extends ApiController
      */
     public function __construct()
     {
-        //
+
     }
 
     public function getAll(Request $request)
     {
         $msg = null;
         $data = [];
+        // $this->authinticate('product', 'list');
         try {
             $list = Product::where('product.status', 1);
             $list->join('category', 'category.id', '=', 'product.category_id');
@@ -102,7 +104,7 @@ class ProductController extends ApiController
         return $this->respond([
             'status' => $data ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -139,8 +141,8 @@ class ProductController extends ApiController
                 'category.category_name as categoryName',
             )
             ->findOrFail($id);
-            $attribute_data = \DB::select(
-                \DB::raw("SELECT
+            $attribute_data = DB::select(
+                DB::raw("SELECT
                     a.id as attributeId, a.name as attributeName, pv.id as variantId,
                     av.value as attributeValue, av.id as attributeValueId
                     from product_variants pv
@@ -170,7 +172,7 @@ class ProductController extends ApiController
         return $this->respond([
             'status' => $data ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -217,7 +219,7 @@ class ProductController extends ApiController
         return $this->respond([
             'status' => ($product) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -314,7 +316,7 @@ class ProductController extends ApiController
         return $this->respond([
             'status' => $status,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 
@@ -330,7 +332,7 @@ class ProductController extends ApiController
         return $this->respond([
             'status' => ($data) ? true : false,
             'message' => $msg,
-            'respond' => $data
+            'response' => $data
         ]);
     }
 

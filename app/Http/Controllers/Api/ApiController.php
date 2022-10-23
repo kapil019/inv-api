@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use \Illuminate\Http\Response as Res;
@@ -9,7 +9,7 @@ use \Illuminate\Http\Response as Res;
  * Class ApiController
  * @package App\Modules\Api\Lesson\Controllers
  */
-class ApiController extends Controller {
+class ApiController extends \App\Http\Controllers\Controller {
 
   public $perPage;
 
@@ -19,8 +19,19 @@ class ApiController extends Controller {
    * @return void
    */
   public function __construct() {
-    // $this->beforeFilter('auth', ['on' => 'post']);
-    $this->perPage = env('PER_PAGE') ?? 15;
+    $this->perPage = env('PER_PAGE') ?? 15;    
+  }
+
+  public function authinticate($resource, $action)
+  {
+    if (empty(auth()->guard('api')->user())) {
+      $this->setStatusCode(401);
+      return $this->respond([
+        'status' => 'error',
+        'message' => 'Unauthenticated',
+        'response' => []
+      ]);
+    }
   }
 
   public function index() {

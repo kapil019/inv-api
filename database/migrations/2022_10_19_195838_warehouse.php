@@ -13,7 +13,7 @@ class Warehouse extends Migration
      */
     public function up()
     {
-        Schema::create('warehouse', function (Blueprint $table) {
+        Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
             $table->integer('company_id');
             $table->string('name');
@@ -33,6 +33,6 @@ class Warehouse extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('warehouse');
+        Schema::dropIfExists('warehouses');
     }
 }

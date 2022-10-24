@@ -2,16 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Warehouse extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['id'];
-
-    protected $table = 'warehouse';
-
-    public $timestamps = true;
+    use HasFactory;
 }

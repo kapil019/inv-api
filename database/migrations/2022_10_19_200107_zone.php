@@ -13,7 +13,7 @@ class Zone extends Migration
      */
     public function up()
     {
-        Schema::create('zone', function (Blueprint $table) {
+        Schema::create('zones', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('status');
@@ -28,6 +28,6 @@ class Zone extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zone');
+        Schema::dropIfExists('zones');
     }
 }

@@ -13,7 +13,7 @@ class ZonePriceRule extends Migration
      */
     public function up()
     {
-        Schema::create('zone_price_rule', function (Blueprint $table) {
+        Schema::create('zone_price_rules', function (Blueprint $table) {
             $table->id();
             $table->string('rule_name');
             $table->integer('zone_id');
@@ -34,6 +34,6 @@ class ZonePriceRule extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zone_price_rule');
+        Schema::dropIfExists('zone_price_rules');
     }
 }

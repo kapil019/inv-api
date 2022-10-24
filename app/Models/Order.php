@@ -15,7 +15,7 @@ class Order extends Model
 
     public $timestamps = true;
 
-    const DECIMAL_FIELDS = [
+    public $decimalFields = [
         "shippingAmount",
         "packingAmount",
         "forwardAmount",
@@ -30,14 +30,9 @@ class Order extends Model
     ];
 
     const TYPES = [
+        'quotation',
         'booking',
         'sales'
     ];
-
-    public function translateDecimals() {
-        foreach (self::DECIMAL_FIELDS as $field) {
-            $this->{$field} = (float) $this->{$field};
-        }
-    }
     
 }

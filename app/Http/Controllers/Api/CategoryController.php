@@ -8,17 +8,15 @@ use App\Models\Category;
 
 class CategoryController extends ApiController
 {
+    const FAILURE_MESSAGE = "Records not found. Please try again later";
+
     private $error = "Error while creating. Please try";
     private $rule = array(
-        'CategoryName' => 'required|max:255',
-        'ActionBy' => 'required',
-        'Status' => 'required'
+        'name' => 'required',
+        'companyId' => 'required',
     );
-    private $ruleMessage = [
-        'categoryName' => "Category Name is required",
-        'actionBy' => "ActionBy is required",
-        'status' => "Status is required",
-    ];
+    private $ruleMessage = [];
+
     /**
      * Create a new controller instance.
      *
@@ -29,33 +27,32 @@ class CategoryController extends ApiController
         //
     }
 
-    public function getAll() {
-        $msg = "";
-        $data = Category::SimplePaginate($this->perPage);
-        if($data->isEmpty()) {
-            $msg = "Records not found. Please try";
+    public function getAll(Request $request)
+    {
+        $msg = null;
+        $list = Category::select(
+            ['id', 'name', 'company_id', 'parent_id', 'status']
+        )->where('status', 1);
+        if (!empty($request->id)) {
+            $list->where('id', $request->id);
+        }
+        if (!empty($request->companyId)) {
+            $list->where('company_id', $request->companyId);
+        }
+        if (!empty($request->parentId)) {
+            $list->where('parent_id', $request->parentId);
+        }
+        $categorys = $list->orderBy('id', 'desc')->SimplePaginate();
+        if ($categorys->isEmpty()) {
+            $msg = self::FAILURE_MESSAGE;
+        }
+        foreach ($categorys as $category) {
+            $category->_translate();
         }
         return $this->respond([
-            'status' => $data ? true : false,
+            'status' => $categorys ? true : false,
             'message' => $msg,
-            'response' => $data
-        ]);
-    }
-
-    public function get($id) {
-        $data = null;
-        $msg = "Records not found. Please try";
-        try {
-            $data = Category::findOrFail($id);
-            $msg = null;
-        } catch (\Exception  $e) {
-            $status = false;
-            $msg = "Records not found. Please try";
-        }
-        return $this->respond([
-            'status' => $data ? true : false,
-            'message' => $msg,
-            'response' => $data
+            'response' => $categorys
         ]);
     }
 
@@ -63,19 +60,24 @@ class CategoryController extends ApiController
         $data = null;
         $msg = $this->error;
         try {
-            $params = $this->requestToModel($request->all());
-            $validator = Validator::make($params, $this->rule, $this->ruleMessage);
+            $validator = Validator::make($request->all(), $this->rule, $this->ruleMessage);
             if ($validator->fails()) {
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
-                $data = Category::create($params);
+                $category = new Category();
+                $category->name =  $request->name;
+                $category->company_id =  $request->companyId;
+                $category->parent_id = $request->parentId ?? 0;
+                $category->status =  $request->status ?? 1;
+                $category->save();
                 $msg = "Category created successfully";
             }
         } catch (\Exception  $e) {
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = $this->error;
         }
         return $this->respond([
-            'status' => ($data) ? true : false,
+            'status' => ($category) ? true : false,
             'message' => $msg,
             'response' => $data
         ]);
@@ -85,21 +87,26 @@ class CategoryController extends ApiController
         $data = null;
         $msg = $this->error;
         try {
-            $resp = Category::findOrFail($id);
-            $params = $this->requestToModel($request->all());
-            $validator = Validator::make($params, $this->rule, $this->ruleMessage);
+            $category = Category::findOrFail($id);
+            $validator = Validator::make($request->all(), $this->rule, $this->ruleMessage);
             if ($validator->fails()) {
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
-                $resp->update($params);
-                $data = Category::findOrFail($id);
+                if (!empty($request->name)) {
+                    $category->name =  $request->name;
+                }
+                if (isset($request->status)) {
+                    $category->status =  $request->status;
+                }
+                $category->save();
                 $msg = "Category updated successfully";
             }
         } catch (\Exception  $e) {
-            $msg = "Records not found. Please try";
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
+            $msg = self::FAILURE_MESSAGE;
         }
         return $this->respond([
-            'status' => ($data) ? true : false,
+            'status' => ($category) ? true : false,
             'message' => $msg,
             'response' => $data
         ]);
@@ -111,7 +118,8 @@ class CategoryController extends ApiController
             $data = Category::findOrFail($id)->delete();
             $msg = "Record deleted successfully";
         } catch (\Exception $e) {
-            $msg = "Records not found. Please try";
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
+            $msg = self::FAILURE_MESSAGE;
         }
         return $this->respond([
             'status' => ($data) ? true : false,
@@ -120,11 +128,4 @@ class CategoryController extends ApiController
         ]);
     }
 
-    function requestToModel($params) {
-        $res['CategoryName'] = $params['categoryName'] ?? "";
-        $res['ParentId'] = $params['parentId'] ?? 0;
-        $res['Status'] = $params['status'] ?? 1;
-        $res['ActionBy'] = $params['actionBy'];
-        return $res;
-    }
 }

@@ -30,6 +30,9 @@ class SettingController extends ApiController
             $list->where('setting_for', $request->settingFor);
         }
         $items = $list->orderBy('id', 'desc')->get();
+        foreach ($items as $item) {
+            $item->_translate();
+        }
         return $this->respond([
             'status' => $items ? true : false,
             'message' => $msg,

@@ -81,7 +81,7 @@ class OrderController extends ApiController
             );
             $orders = $list->orderBy('orders.id', 'desc')->SimplePaginate($this->perPage);
             foreach ($orders as $order) {
-                $order->translateDecimals();
+                $order->_translate();
             }
         } catch (\InvalidArgumentException $e) {
             $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
@@ -97,10 +97,13 @@ class OrderController extends ApiController
         ]);
     }
 
-    public function get($id) {
+    public function get(Request $request) {
         $order = null;
         $msg = null;
         try {
+            if (!in_array($request->type, Order::TYPES)) {
+                throw new \InvalidArgumentException('Type is not valid');
+            }
             $order = Order::select(['orders.company_id as companyId',
             'orders.order_number as orderNumber',
             'orders.payment_status as paymentStatus',
@@ -123,9 +126,12 @@ class OrderController extends ApiController
             'orders.invoice_number as invoiceNumber',
             'orders.invoice_url as invoiceUrl',
             'orders.remark as remark',
-            'orders.status',])->findOrFail($id);
-            $order->translateDecimals();
+            'orders.status',])->where('type', $request->type)->findOrFail($request->id);
+            $order->_translate();
             $msg = null;
+        } catch (\InvalidArgumentException $e) {
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
+            $msg = $e->getMessage();
         } catch (\Exception  $e) {
             $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = self::FAILURE_MESSAGE;

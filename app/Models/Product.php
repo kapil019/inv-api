@@ -8,9 +8,10 @@ class Product extends Model
     protected $attributeList = [];
     protected $customFields = [];
 
-    protected $appends = array('attributeList', 'customFields');
+    protected $appends = ['attributeList', 'customFields'];
 
-    
+    public $stringFields = ['mcWeight', 'mc_weight'];
+
     public function setAttributeListAttribute($data)
     {
         $this->attributeList[] = $data;

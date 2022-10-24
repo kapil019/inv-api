@@ -40,7 +40,7 @@ class ProductController extends ApiController
     public function getAll(Request $request)
     {
         $msg = null;
-        $data = [];
+        $products = [];
         // $this->authinticate('product', 'list');
         try {
             $list = Product::where('product.status', 1);
@@ -67,7 +67,7 @@ class ProductController extends ApiController
                 $list->where('product.list_no', '=', $request->get('listNo'));
             }
             $list->select(
-                'product.product_id as productId',
+                'product.product_id as product_id',
                 'product.category_id as categoryId',
                 'product.product_name as productName',
                 'product.list_no as listNo',
@@ -93,26 +93,29 @@ class ProductController extends ApiController
                 'product.status',
                 'category.category_name as categoryName',
             );
-            $data = $list->orderBy('product.id', 'desc')->SimplePaginate($this->perPage);
-            if ($data->isEmpty()) {
+            $products = $list->orderBy('product.id', 'desc')->SimplePaginate($this->perPage);
+            if ($products->isEmpty()) {
                 $msg = self::FAILURE_MESSAGE;
+            }
+            foreach ($products as $product) {
+                $product->_translate();
             }
         } catch (\Exception $e) {
             $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = self::FAILURE_MESSAGE;
         }
         return $this->respond([
-            'status' => $data ? true : false,
+            'status' => $products ? true : false,
             'message' => $msg,
-            'response' => $data
+            'response' => $products
         ]);
     }
 
     public function get($id) {
-        $data = null;
+        $product = null;
         $msg = null;
         try {
-            $data = Product::join('category', 'category.id', '=', 'product.category_id')
+            $product = Product::join('category', 'category.id', '=', 'product.category_id')
             ->select(
                 'product.product_id as productId',
                 'product.category_id as categoryId',
@@ -141,6 +144,7 @@ class ProductController extends ApiController
                 'category.category_name as categoryName',
             )
             ->findOrFail($id);
+            $product->_translate();
             $attribute_data = DB::select(
                 DB::raw("SELECT
                     a.id as attributeId, a.name as attributeName, pv.id as variantId,
@@ -162,7 +166,7 @@ class ProductController extends ApiController
                     }
                     $attributes[$attribute->variantId]['data'][] = $attribute;
                 }
-                $data->setAttributeListAttribute(array_values($attributes));
+                $product->setAttributeListAttribute(array_values($attributes));
             }
             $msg = null;
         } catch (\Exception  $e) {
@@ -170,9 +174,9 @@ class ProductController extends ApiController
             $msg = self::FAILURE_MESSAGE;
         }
         return $this->respond([
-            'status' => $data ? true : false,
+            'status' => $product ? true : false,
             'message' => $msg,
-            'response' => $data
+            'response' => $product
         ]);
     }
 

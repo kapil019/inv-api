@@ -29,31 +29,22 @@ class PackingController extends ApiController
     public function getAll(Request $request)
     {
         $msg = null;
-        $data = Packing::select(['id', 'name', 'status'])->SimplePaginate($this->perPage);
-        if ($data->isEmpty()) {
+        $packings = [];
+        $list = Packing::select(['id', 'name', 'status']);
+        if (!empty($request->id)) {
+            $list->where('id', $request->id);
+        }
+        $packings = $list->orderBy('id', 'desc')->SimplePaginate();
+        if ($packings->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }
-        return $this->respond([
-            'status' => $data ? true : false,
-            'message' => $msg,
-            'response' => $data
-        ]);
-    }
-
-    public function get($id) {
-        $data = null;
-        $msg = null;
-        try {
-            $data = Packing::select(['id', 'name', 'status'])->findOrFail($id);
-            $msg = null;
-        } catch (\Exception  $e) {
-            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
-            $msg = self::FAILURE_MESSAGE;
+        foreach ($packings as $cargo) {
+            $cargo->_translate();
         }
         return $this->respond([
-            'status' => $data ? true : false,
+            'status' => $packings ? true : false,
             'message' => $msg,
-            'response' => $data
+            'response' => $packings
         ]);
     }
 

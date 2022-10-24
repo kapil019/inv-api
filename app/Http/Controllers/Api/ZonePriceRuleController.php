@@ -12,9 +12,9 @@ class ZonePriceRuleController extends ApiController
 
     private $error = "Error while creating. Please try";
     private $rule = array(
-        'rule_name' => 'required',
-        'zone_id' => 'required',
-        'discount_type' => 'required',
+        'ruleName' => 'required',
+        'zoneId' => 'required',
+        'discountType' => 'required',
         'discount' => 'required'
     );
     private $ruleMessage = [];
@@ -32,30 +32,28 @@ class ZonePriceRuleController extends ApiController
     public function getAll(Request $request)
     {
         $msg = null;
-        $data = ZonePriceRule::SimplePaginate($this->perPage);
-        if ($data->isEmpty()) {
-            $msg = self::FAILURE_MESSAGE;
-        }
-        return $this->respond([
-            'status' => $data ? true : false,
-            'message' => $msg,
-            'response' => $data
+        $rules = [];
+        $list = ZonePriceRule::select([
+            'id', 'rule_name', 'zone_id', 'discount_type', 'discount',
+            'category_id', 'status', 'product_id', 'product_variant_id'
         ]);
-    }
-
-    public function get($id) {
-        $data = null;
-        $msg = null;
-        try {
-            $data = ZonePriceRule::findOrFail($id);
-            $msg = null;
-        } catch (\Exception  $e) {
+        if (!empty($request->id)) {
+            $list->where('id', $request->id);
+        }
+        if (!empty($request->zoneId)) {
+            $list->where('zone_id', $request->zoneId);
+        }
+        $rules = $list->orderBy('id', 'desc')->SimplePaginate();
+        if ($rules->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }
+        foreach ($rules as $rule) {
+            $rule->_translate();
+        }
         return $this->respond([
-            'status' => $data ? true : false,
+            'status' => $rules ? true : false,
             'message' => $msg,
-            'response' => $data
+            'response' => $rules
         ]);
     }
 
@@ -68,12 +66,12 @@ class ZonePriceRuleController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $rule = new ZonePriceRule();
-                $rule->rule_name =  $request->rule_name;
-                $rule->zone_id =  $request->zone_id;
-                $rule->category_id =  $request->category_id ?? 0;
-                $rule->product_id =  $request->product_id ?? 0;
-                $rule->product_variant_id =  $request->zone_id ?? 0;
-                $rule->discount_type =  $request->discount_type ?? 'F';
+                $rule->rule_name =  $request->ruleName;
+                $rule->zone_id =  $request->zoneId;
+                $rule->category_id =  $request->categoryId ?? 0;
+                $rule->product_id =  $request->productId ?? 0;
+                $rule->product_variant_id =  $request->productVariantId ?? 0;
+                $rule->discount_type =  $request->discountType ?? 'F';
                 $rule->discount =  $request->discount ?? 0;
                 $rule->status =  $request->status ?? 1;
                 $rule->save();
@@ -99,23 +97,23 @@ class ZonePriceRuleController extends ApiController
             if ($validator->fails()) {
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
-                if (!empty($request->rule_name)) {
-                    $rule->rule_name =  $request->rule_name;
+                if (!empty($request->ruleName)) {
+                    $rule->rule_name =  $request->ruleName;
                 }
-                if (isset($request->zone_id)) {
-                    $rule->zone_id =  $request->zone_id;
+                if (isset($request->zoneId)) {
+                    $rule->zone_id =  $request->zoneId;
                 }
-                if (isset($request->category_id)) {
-                    $rule->category_id =  $request->category_id;
+                if (isset($request->categoryId)) {
+                    $rule->category_id =  $request->categoryId;
                 }
-                if (isset($request->product_id)) {
-                    $rule->product_id =  $request->product_id;
+                if (isset($request->productId)) {
+                    $rule->product_id =  $request->productId;
                 }
-                if (isset($request->product_variant_id)) {
-                    $rule->product_variant_id =  $request->product_variant_id;
+                if (isset($request->productVariantId)) {
+                    $rule->product_variant_id =  $request->productVariantId;
                 }
-                if (isset($request->discount_type)) {
-                    $rule->discount_type =  $request->discount_type;
+                if (isset($request->discountType)) {
+                    $rule->discount_type =  $request->discountType;
                 }
                 if (isset($request->discount)) {
                     $rule->discount =  $request->discount;

@@ -32,51 +32,26 @@ class CompanyController extends ApiController
     public function getAll(Request $request)
     {
         $msg = null;
-        $data = Company::select([
-            'id',
-            'name',
-            'phone',
-            'email',
-            'gst_number as gstNumber',
-            'address_line_1 as addressLine1',
-            'address_line_2 as addressLine2',
-            'logo_path as logoPath',
-            'status'
-        ])->SimplePaginate($this->perPage);
-        if ($data->isEmpty()) {
+        $items = [];
+        $list = Company::select(['id',
+            'name', 'phone', 'email', 'gst_number as gstNumber',
+            'address_line_1 as addressLine1', 'address_line_2 as addressLine2',
+            'logo_path as logoPath', 'status']
+        );
+        if (!empty($request->id)) {
+            $list->where('id', $request->id);
+        }
+        $items = $list->orderBy('id', 'desc')->SimplePaginate();
+        if ($items->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }
-        return $this->respond([
-            'status' => $data ? true : false,
-            'message' => $msg,
-            'response' => $data
-        ]);
-    }
-
-    public function get($id) {
-        $data = null;
-        $msg = null;
-        try {
-            $data = Company::select([
-                'id',
-                'name',
-                'phone',
-                'email',
-                'gst_number as gstNumber',
-                'address_line_1 as addressLine1',
-                'address_line_2 as addressLine2',
-                'logo_path as logoPath',
-                'status'
-            ])->findOrFail($id);
-            $msg = null;
-        } catch (\Exception  $e) {
-            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
-            $msg = self::FAILURE_MESSAGE;
+        foreach ($items as $item) {
+            $item->_translate();
         }
         return $this->respond([
-            'status' => $data ? true : false,
+            'status' => $items ? true : false,
             'message' => $msg,
-            'response' => $data
+            'response' => $items
         ]);
     }
 

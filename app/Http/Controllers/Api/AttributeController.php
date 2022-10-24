@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Zone;
+use App\Models\Attribute;
 
-class ZoneController extends ApiController
+class AttributeController extends ApiController
 {
     const FAILURE_MESSAGE = "Records not found. Please try again later";
 
     private $error = "Error while creating. Please try";
     private $rule = array(
         'name' => 'required',
+        'companyId' => 'required',
+        'categoryId' => 'required',
     );
     private $ruleMessage = [];
 
@@ -29,22 +31,46 @@ class ZoneController extends ApiController
     public function getAll(Request $request)
     {
         $msg = null;
-        $zones = [];
-        $list = Zone::select(['id', 'name', 'status']);
+        $list = Attribute::select(
+            ['id', 'name', 'company_id', 'category_id', 'status']
+        )->where('status', 1);
         if (!empty($request->id)) {
             $list->where('id', $request->id);
         }
-        $zones = $list->orderBy('id', 'desc')->SimplePaginate();
-        if ($zones->isEmpty()) {
+        if (!empty($request->companyId)) {
+            $list->where('company_id', $request->companyId);
+        }
+        if (!empty($request->categoryId)) {
+            $list->where('category_id', $request->categoryId);
+        }
+        $attributes = $list->orderBy('id', 'desc')->SimplePaginate();
+        if ($attributes->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }
-        foreach ($zones as $zone) {
-            $zone->_translate();
+        foreach ($attributes as $attribute) {
+            $attribute->_translate();
         }
         return $this->respond([
-            'status' => $zones ? true : false,
+            'status' => $attributes ? true : false,
             'message' => $msg,
-            'response' => $zones
+            'response' => $attributes
+        ]);
+    }
+
+    public function get($id) {
+        $data = null;
+        $msg = null;
+        try {
+            $data = Attribute::select(['id', 'name', 'status'])->findOrFail($id);
+            $msg = null;
+        } catch (\Exception  $e) {
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
+            $msg = self::FAILURE_MESSAGE;
+        }
+        return $this->respond([
+            'status' => $data ? true : false,
+            'message' => $msg,
+            'response' => $data
         ]);
     }
 
@@ -56,18 +82,20 @@ class ZoneController extends ApiController
             if ($validator->fails()) {
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
-                $zone = new Zone();
-                $zone->name =  $request->name;
-                $zone->status =  $request->status ?? 1;
-                $zone->save();
-                $msg = "Zone created successfully";
+                $attribute = new Attribute();
+                $attribute->name =  $request->name;
+                $attribute->company_id =  $request->companyId;
+                $attribute->category_id =  $request->categoryId;
+                $attribute->status =  $request->status ?? 1;
+                $attribute->save();
+                $msg = "Attribute created successfully";
             }
         } catch (\Exception  $e) {
-            print_r($e->getMessage()); die;
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = $this->error;
         }
         return $this->respond([
-            'status' => ($zone) ? true : false,
+            'status' => ($attribute) ? true : false,
             'message' => $msg,
             'response' => $data
         ]);
@@ -77,25 +105,26 @@ class ZoneController extends ApiController
         $data = null;
         $msg = $this->error;
         try {
-            $zone = Zone::findOrFail($id);
+            $attribute = Attribute::findOrFail($id);
             $validator = Validator::make($request->all(), $this->rule, $this->ruleMessage);
             if ($validator->fails()) {
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $zone->name =  $request->name;
+                    $attribute->name =  $request->name;
                 }
                 if (isset($request->status)) {
-                    $zone->status =  $request->status;
+                    $attribute->status =  $request->status;
                 }
-                $zone->save();
-                $msg = "Zone updated successfully";
+                $attribute->save();
+                $msg = "Attribute updated successfully";
             }
         } catch (\Exception  $e) {
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = self::FAILURE_MESSAGE;
         }
         return $this->respond([
-            'status' => ($zone) ? true : false,
+            'status' => ($attribute) ? true : false,
             'message' => $msg,
             'response' => $data
         ]);
@@ -104,9 +133,10 @@ class ZoneController extends ApiController
     public function delete($id) {
         $data = false;
         try {
-            $data = Zone::findOrFail($id)->delete();
+            $data = Attribute::findOrFail($id)->delete();
             $msg = "Record deleted successfully";
         } catch (\Exception $e) {
+            $this->error([__FILE__, __LINE__, __FUNCTION__, $e->getMessage()]);
             $msg = self::FAILURE_MESSAGE;
         }
         return $this->respond([

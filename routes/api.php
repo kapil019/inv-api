@@ -8,6 +8,8 @@ use \App\Http\Controllers\Api\WarehouseController;
 use \App\Http\Controllers\Api\CustomerController;
 use \App\Http\Controllers\Api\CompanyController;
 use \App\Http\Controllers\Api\CategoryController;
+use \App\Http\Controllers\Api\AttributeController;
+use \App\Http\Controllers\Api\AttributeValueController;
 use \App\Http\Controllers\Api\CargoController;
 use \App\Http\Controllers\Api\PackingController;
 use \App\Http\Controllers\Api\Order\OrderController;
@@ -43,10 +45,21 @@ Route::post('/login', [AuthController::class, 'login']);
 
         // Category
         Route::get('category', [CategoryController::class, 'getAll']);
-        Route::get('category/{id}', [CategoryController::class, 'get']);
         Route::post('category', [CategoryController::class, 'create']);
         Route::put('category/{id}', [CategoryController::class, 'update']);
         Route::delete('category/{id}', [CategoryController::class, 'delete']);
+
+        // Attribute/value
+        Route::get('attribute/value', [AttributeValueController::class, 'getAll']);
+        Route::post('attribute/value', [AttributeValueController::class, 'create']);
+        Route::put('attribute/value/{id}', [AttributeValueController::class, 'update']);
+        Route::delete('attribute/value/{id}', [AttributeValueController::class, 'delete']);
+        
+        // Attributes
+        Route::get('attribute', [AttributeController::class, 'getAll']);
+        Route::post('attribute', [AttributeController::class, 'create']);
+        Route::put('attribute/{id}', [AttributeController::class, 'update']);
+        Route::delete('attribute/{id}', [AttributeController::class, 'delete']);
 
         // Product
         Route::get('products', [ProductController::class, 'getAll']);
@@ -57,62 +70,55 @@ Route::post('/login', [AuthController::class, 'login']);
 
         // Company
         Route::get('company', [CompanyController::class, 'getAll']);
-        Route::get('company/{id}', [CompanyController::class, 'get']);
         Route::post('company', [CompanyController::class, 'create']);
         Route::put('company/{id}', [CompanyController::class, 'update']);
         Route::delete('company/{id}', [CompanyController::class, 'delete']);
 
         // Warehouse
         Route::get('warehouse', [WarehouseController::class, 'getAll']);
-        Route::get('warehouse/{id}', [WarehouseController::class, 'get']);
         Route::post('warehouse', [WarehouseController::class, 'create']);
         Route::put('warehouse/{id}', [WarehouseController::class, 'update']);
         Route::delete('warehouse/{id}', [WarehouseController::class, 'delete']);
 
         // Customer
         Route::get('customer', [CustomerController::class, 'getAll']);
-        Route::get('customer/{id}', [CustomerController::class, 'get']);
         Route::post('customer', [CustomerController::class, 'create']);
         Route::put('customer/{id}', [CustomerController::class, 'update']);
         Route::delete('customer/{id}', [CustomerController::class, 'delete']);
         
         // Cargo
         Route::get('cargo', [CargoController::class, 'getAll']);
-        Route::get('cargo/{id}', [CargoController::class, 'get']);
         Route::post('cargo', [CargoController::class, 'create']);
         Route::put('cargo/{id}', [CargoController::class, 'update']);
         Route::delete('cargo/{id}', [CargoController::class, 'delete']);
 
         // Packing
         Route::get('packing', [PackingController::class, 'getAll']);
-        Route::get('packing/{id}', [PackingController::class, 'get']);
         Route::post('packing', [PackingController::class, 'create']);
         Route::put('packing/{id}', [PackingController::class, 'update']);
         Route::delete('packing/{id}', [PackingController::class, 'delete']);
 
         // Order/item
-        Route::get('order/{type}/item', [OrderItemController::class, 'getAll']);
-        Route::post('order/{type}/item', [OrderItemController::class, 'create']);
-        Route::put('order/{type}/item/{id}', [OrderItemController::class, 'update']);
-        Route::delete('order/{type}/item/{id}', [OrderItemController::class, 'delete']);
+        Route::get('order/item/{type}', [OrderItemController::class, 'getAll']);
+        Route::post('order/item/{type}', [OrderItemController::class, 'create']);
+        Route::put('order/item/{type}/{id}', [OrderItemController::class, 'update']);
+        Route::delete('order/item/{type}/{id}', [OrderItemController::class, 'delete']);
 
         // Order
         Route::get('order/{type}', [OrderController::class, 'getAll']);
-        Route::get('order/{type}{id}', [OrderController::class, 'get']);
+        Route::get('order/{type}/{id}', [OrderController::class, 'get']);
         Route::post('order/{type}', [OrderController::class, 'create']);
         Route::put('order/{type}/{id}', [OrderController::class, 'update']);
         Route::delete('order/{type}/{id}', [OrderController::class, 'delete']);
 
         // zone/rule
         Route::get('zone/rule', [ZonePriceRuleController::class, 'getAll']);
-        Route::get('zone/rule/{id}', [ZonePriceRuleController::class, 'get']);
         Route::post('zone/rule', [ZonePriceRuleController::class, 'create']);
         Route::put('zone/rule/{id}', [ZonePriceRuleController::class, 'update']);
         Route::delete('zone/rule/{id}', [ZonePriceRuleController::class, 'delete']);
                 
         // Zone
         Route::get('zone', [ZoneController::class, 'getAll']);
-        Route::get('zone/{id}', [ZoneController::class, 'get']);
         Route::post('zone', [ZoneController::class, 'create']);
         Route::put('zone/{id}', [ZoneController::class, 'update']);
         Route::delete('zone/{id}', [ZoneController::class, 'delete']);

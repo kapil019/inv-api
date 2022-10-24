@@ -34,7 +34,7 @@ class PackingController extends ApiController
         if (!empty($request->id)) {
             $list->where('id', $request->id);
         }
-        $packings = $list->orderBy('id', 'desc')->SimplePaginate();
+        $packings = $list->orderBy('id', 'desc')->simplePaginate();
         if ($packings->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }

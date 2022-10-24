@@ -93,7 +93,7 @@ class ProductController extends ApiController
                 'product.status',
                 'category.category_name as categoryName',
             );
-            $products = $list->orderBy('product.id', 'desc')->SimplePaginate($this->perPage);
+            $products = $list->orderBy('product.id', 'desc')->simplePaginate($this->perPage);
             if ($products->isEmpty()) {
                 $msg = self::FAILURE_MESSAGE;
             }

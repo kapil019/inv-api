@@ -37,7 +37,7 @@ class CargoController extends ApiController
         if (!empty($request->id)) {
             $list->where('id', $request->id);
         }
-        $cargos = $list->orderBy('id', 'desc')->SimplePaginate();
+        $cargos = $list->orderBy('id', 'desc')->simplePaginate();
         if ($cargos->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }

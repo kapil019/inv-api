@@ -43,7 +43,7 @@ class AttributeController extends ApiController
         if (!empty($request->categoryId)) {
             $list->where('category_id', $request->categoryId);
         }
-        $attributes = $list->orderBy('id', 'desc')->SimplePaginate();
+        $attributes = $list->orderBy('id', 'desc')->simplePaginate();
         if ($attributes->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }

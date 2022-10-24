@@ -79,7 +79,7 @@ class OrderController extends ApiController
                 'orders.remark as remark',
                 'orders.status',
             );
-            $orders = $list->orderBy('orders.id', 'desc')->SimplePaginate($this->perPage);
+            $orders = $list->orderBy('orders.id', 'desc')->simplePaginate($this->perPage);
             foreach ($orders as $order) {
                 $order->_translate();
             }

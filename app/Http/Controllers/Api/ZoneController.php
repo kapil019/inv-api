@@ -34,7 +34,7 @@ class ZoneController extends ApiController
         if (!empty($request->id)) {
             $list->where('id', $request->id);
         }
-        $zones = $list->orderBy('id', 'desc')->SimplePaginate();
+        $zones = $list->orderBy('id', 'desc')->simplePaginate();
         if ($zones->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }

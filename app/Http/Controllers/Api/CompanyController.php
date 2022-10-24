@@ -41,7 +41,7 @@ class CompanyController extends ApiController
         if (!empty($request->id)) {
             $list->where('id', $request->id);
         }
-        $items = $list->orderBy('id', 'desc')->SimplePaginate();
+        $items = $list->orderBy('id', 'desc')->simplePaginate();
         if ($items->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }

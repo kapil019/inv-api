@@ -43,7 +43,7 @@ class ZonePriceRuleController extends ApiController
         if (!empty($request->zoneId)) {
             $list->where('zone_id', $request->zoneId);
         }
-        $rules = $list->orderBy('id', 'desc')->SimplePaginate();
+        $rules = $list->orderBy('id', 'desc')->simplePaginate();
         if ($rules->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }

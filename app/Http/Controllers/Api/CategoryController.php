@@ -42,7 +42,7 @@ class CategoryController extends ApiController
         if (!empty($request->parentId)) {
             $list->where('parent_id', $request->parentId);
         }
-        $categorys = $list->orderBy('id', 'desc')->SimplePaginate();
+        $categorys = $list->orderBy('id', 'desc')->simplePaginate();
         if ($categorys->isEmpty()) {
             $msg = self::FAILURE_MESSAGE;
         }

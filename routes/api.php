@@ -19,6 +19,8 @@ use \App\Http\Controllers\Api\ZoneController;
 use \App\Http\Controllers\Api\SettingController;
 use \App\Http\Controllers\Api\ZonePriceRuleController;
 
+use \App\Http\Controllers\Api\PaymentController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -123,6 +125,12 @@ Route::post('/login', [AuthController::class, 'login']);
         Route::put('zone/{id}', [ZoneController::class, 'update']);
         Route::delete('zone/{id}', [ZoneController::class, 'delete']);
 
+        // Payment
+        Route::get('payment', [PaymentController::class, 'getAll']);
+        Route::post('payment', [PaymentController::class, 'create']);
+        Route::put('payment/{id}', [PaymentController::class, 'update']);
+        Route::delete('payment/{id}', [PaymentController::class, 'delete']);
+        
 //     });
 // });
 

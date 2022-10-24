@@ -62,13 +62,13 @@ class WarehouseController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $warehouse = new Warehouse();
-                $warehouse->name =  $request->name;
-                $warehouse->email =  $request->email;
-                $warehouse->phone =  $request->phone;
-                $warehouse->company_id =  $request->companyId;
-                $warehouse->address_line_1 =  $request->addressLine1 ?? "";
-                $warehouse->address_line_2 =  $request->addressLine2 ?? "";
-                $warehouse->status =  $request->status ?? 1;
+                $warehouse->name = $request->name;
+                $warehouse->email = $request->email;
+                $warehouse->phone = $request->phone;
+                $warehouse->company_id = $request->companyId;
+                $warehouse->address_line_1 = $request->addressLine1 ?? "";
+                $warehouse->address_line_2 = $request->addressLine2 ?? "";
+                $warehouse->status = $request->status ?? 1;
                 $warehouse->save();
                 $msg = "Warehouse created successfully";
             }
@@ -93,22 +93,22 @@ class WarehouseController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $warehouse->name =  $request->name;
+                    $warehouse->name = $request->name;
                 }
                 if (!empty($request->email)) {
-                    $warehouse->email =  $request->email;
+                    $warehouse->email = $request->email;
                 }
                 if (!empty($request->phone)) {
-                    $warehouse->phone =  $request->phone;
+                    $warehouse->phone = $request->phone;
                 }
                 if (!empty($request->addressLine1)) {
-                    $warehouse->address_line_1 =  $request->addressLine1;
+                    $warehouse->address_line_1 = $request->addressLine1;
                 }
                 if (!empty($request->addressLine2)) {
-                    $warehouse->address_line_2 =  $request->addressLine2;
+                    $warehouse->address_line_2 = $request->addressLine2;
                 }
                 if (isset($request->status)) {
-                    $warehouse->status =  $request->status;
+                    $warehouse->status = $request->status;
                 }
                 $warehouse->save();
                 $msg = "Warehouse updated successfully";

@@ -57,8 +57,8 @@ class PackingController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $packing = new Packing();
-                $packing->name =  $request->name;
-                $packing->status =  $request->status ?? 1;
+                $packing->name = $request->name;
+                $packing->status = $request->status ?? 1;
                 $packing->save();
                 $msg = "Packing created successfully";
             }
@@ -83,10 +83,10 @@ class PackingController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $packing->name =  $request->name;
+                    $packing->name = $request->name;
                 }
                 if (isset($request->status)) {
-                    $packing->status =  $request->status;
+                    $packing->status = $request->status;
                 }
                 $packing->save();
                 $msg = "Packing updated successfully";

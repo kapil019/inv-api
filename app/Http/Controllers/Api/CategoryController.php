@@ -65,10 +65,10 @@ class CategoryController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $category = new Category();
-                $category->name =  $request->name;
-                $category->company_id =  $request->companyId;
+                $category->name = $request->name;
+                $category->company_id = $request->companyId;
                 $category->parent_id = $request->parentId ?? 0;
-                $category->status =  $request->status ?? 1;
+                $category->status = $request->status ?? 1;
                 $category->save();
                 $msg = "Category created successfully";
             }
@@ -93,10 +93,10 @@ class CategoryController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $category->name =  $request->name;
+                    $category->name = $request->name;
                 }
                 if (isset($request->status)) {
-                    $category->status =  $request->status;
+                    $category->status = $request->status;
                 }
                 $category->save();
                 $msg = "Category updated successfully";

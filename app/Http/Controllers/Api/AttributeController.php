@@ -83,10 +83,10 @@ class AttributeController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $attribute = new Attribute();
-                $attribute->name =  $request->name;
-                $attribute->company_id =  $request->companyId;
-                $attribute->category_id =  $request->categoryId;
-                $attribute->status =  $request->status ?? 1;
+                $attribute->name = $request->name;
+                $attribute->company_id = $request->companyId;
+                $attribute->category_id = $request->categoryId;
+                $attribute->status = $request->status ?? 1;
                 $attribute->save();
                 $msg = "Attribute created successfully";
             }
@@ -111,10 +111,10 @@ class AttributeController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $attribute->name =  $request->name;
+                    $attribute->name = $request->name;
                 }
                 if (isset($request->status)) {
-                    $attribute->status =  $request->status;
+                    $attribute->status = $request->status;
                 }
                 $attribute->save();
                 $msg = "Attribute updated successfully";

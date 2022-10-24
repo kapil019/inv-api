@@ -64,16 +64,16 @@ class CustomerController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $customer = new Customer();
-                $customer->name =  $request->name;
-                $customer->email =  $request->email;
-                $customer->phone =  $request->phone;
-                $customer->company_id =  $request->companyId;
-                $customer->state_id =  $request->stateId ?? null;
-                $customer->city_id =  $request->cityId ?? null;
-                $customer->address_line_1 =  $request->addressLine1 ?? "";
-                $customer->address_line_2 =  $request->addressLine2 ?? "";
-                $customer->pincode =  $request->pincode ?? null;
-                $customer->status =  $request->status ?? 1;
+                $customer->name = $request->name;
+                $customer->email = $request->email;
+                $customer->phone = $request->phone;
+                $customer->company_id = $request->companyId;
+                $customer->state_id = $request->stateId ?? null;
+                $customer->city_id = $request->cityId ?? null;
+                $customer->address_line_1 = $request->addressLine1 ?? "";
+                $customer->address_line_2 = $request->addressLine2 ?? "";
+                $customer->pincode = $request->pincode ?? null;
+                $customer->status = $request->status ?? 1;
                 $customer->save();
                 $msg = "Customer created successfully";
             }
@@ -98,31 +98,31 @@ class CustomerController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $customer->name =  $request->name;
+                    $customer->name = $request->name;
                 }
                 if (!empty($request->email)) {
-                    $customer->email =  $request->email;
+                    $customer->email = $request->email;
                 }
                 if (!empty($request->phone)) {
-                    $customer->phone =  $request->phone;
+                    $customer->phone = $request->phone;
                 }
                 if (!empty($request->stateId)) {
-                    $customer->state_id =  $request->stateId;
+                    $customer->state_id = $request->stateId;
                 }
                 if (!empty($request->cityId)) {
-                    $customer->city_id =  $request->cityId;
+                    $customer->city_id = $request->cityId;
                 }
                 if (!empty($request->addressLine1)) {
-                    $customer->address_line_1 =  $request->addressLine1;
+                    $customer->address_line_1 = $request->addressLine1;
                 }
                 if (!empty($request->addressLine2)) {
-                    $customer->address_line_2 =  $request->addressLine2;
+                    $customer->address_line_2 = $request->addressLine2;
                 }
                 if (!empty($request->pincode)) {
-                    $customer->pincode =  $request->pincode;
+                    $customer->pincode = $request->pincode;
                 }
                 if (isset($request->status)) {
-                    $customer->status =  $request->status;
+                    $customer->status = $request->status;
                 }
                 $customer->save();
                 $msg = "Customer updated successfully";

@@ -57,8 +57,8 @@ class ZoneController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $zone = new Zone();
-                $zone->name =  $request->name;
-                $zone->status =  $request->status ?? 1;
+                $zone->name = $request->name;
+                $zone->status = $request->status ?? 1;
                 $zone->save();
                 $msg = "Zone created successfully";
             }
@@ -83,10 +83,10 @@ class ZoneController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $zone->name =  $request->name;
+                    $zone->name = $request->name;
                 }
                 if (isset($request->status)) {
-                    $zone->status =  $request->status;
+                    $zone->status = $request->status;
                 }
                 $zone->save();
                 $msg = "Zone updated successfully";

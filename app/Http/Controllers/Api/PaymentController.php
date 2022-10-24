@@ -64,15 +64,15 @@ class PaymentController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $payment = new Payment();
-                $payment->amount =  $request->amount;
-                $payment->invoice =  $request->invoice ?? 'N';
-                $payment->remark =  $request->remark ?? "";
-                $payment->company_id =  $request->companyId;
-                $payment->customer_id =  $request->customerId;
+                $payment->amount = $request->amount;
+                $payment->invoice = $request->invoice ?? 'N';
+                $payment->remark = $request->remark ?? "";
+                $payment->company_id = $request->companyId;
+                $payment->customer_id = $request->customerId;
                 $payment->order_id=  $request->orderId;
-                $payment->payment_type =  $request->paymentType ?? "";
-                $payment->payment_status =  $request->paymentStatus ?? "";
-                $payment->is_reconciled =  $request->isReconciled ?? 0;
+                $payment->payment_type = $request->paymentType ?? "";
+                $payment->payment_status = $request->paymentStatus ?? "";
+                $payment->is_reconciled = $request->isReconciled ?? 0;
                 $payment->payment_date = date("Y-m-d");
                 $payment->save();
                 $msg = "Payment created successfully";
@@ -98,19 +98,19 @@ class PaymentController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->amount)) {
-                    $payment->amount =  $request->amount;
+                    $payment->amount = $request->amount;
                 }
                 if (!empty($request->invoice)) {
-                    $payment->invoice =  $request->invoice;
+                    $payment->invoice = $request->invoice;
                 }
                 if (!empty($request->remark)) {
-                    $payment->remark =  $request->remark;
+                    $payment->remark = $request->remark;
                 }
                 if (!empty($request->paymentStatus)) {
-                    $payment->payment_status =  $request->paymentStatus;
+                    $payment->payment_status = $request->paymentStatus;
                 }
                 if (!empty($request->isReconciled)) {
-                    $payment->is_reconciled =  $request->isReconciled;
+                    $payment->is_reconciled = $request->isReconciled;
                 }
                 $payment->save();
                 $msg = "Payment updated successfully";

@@ -65,14 +65,14 @@ class CompanyController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $company = new Company();
-                $company->name =  $request->name;
-                $company->email =  $request->email;
-                $company->phone =  $request->phone;
-                $company->gst_number =  $request->gstNumber;
-                $company->logo_path =  $request->logoPath ?? "";
-                $company->address_line_1 =  $request->addressLine1 ?? "";
-                $company->address_line_2 =  $request->addressLine2 ?? "";
-                $company->status =  $request->status ?? 1;
+                $company->name = $request->name;
+                $company->email = $request->email;
+                $company->phone = $request->phone;
+                $company->gst_number = $request->gstNumber;
+                $company->logo_path = $request->logoPath ?? "";
+                $company->address_line_1 = $request->addressLine1 ?? "";
+                $company->address_line_2 = $request->addressLine2 ?? "";
+                $company->status = $request->status ?? 1;
                 $company->save();
                 $msg = "Company created successfully";
             }
@@ -97,28 +97,28 @@ class CompanyController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $company->name =  $request->name;
+                    $company->name = $request->name;
                 }
                 if (!empty($request->email)) {
-                    $company->email =  $request->email;
+                    $company->email = $request->email;
                 }
                 if (!empty($request->phone)) {
-                    $company->phone =  $request->phone;
+                    $company->phone = $request->phone;
                 }
                 if (!empty($request->gstNumber)) {
-                    $company->gst_number =  $request->gstNumber;
+                    $company->gst_number = $request->gstNumber;
                 }
                 if (!empty($request->logoPath)) {
-                    $company->logo_path =  $request->logoPath;
+                    $company->logo_path = $request->logoPath;
                 }
                 if (!empty($request->addressLine1)) {
-                    $company->address_line_1 =  $request->addressLine1;
+                    $company->address_line_1 = $request->addressLine1;
                 }
                 if (!empty($request->addressLine2)) {
-                    $company->address_line_2 =  $request->addressLine2;
+                    $company->address_line_2 = $request->addressLine2;
                 }
                 if (isset($request->status)) {
-                    $company->status =  $request->status;
+                    $company->status = $request->status;
                 }
                 $company->save();
                 $msg = "Company updated successfully";

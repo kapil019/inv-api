@@ -60,11 +60,11 @@ class CargoController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $cargo = new Cargo();
-                $cargo->name =  $request->name;
-                $cargo->email =  $request->email;
-                $cargo->phone =  $request->phone;
-                $cargo->gst_number =  $request->gstNumber ?? "";
-                $cargo->status =  $request->status ?? 1;
+                $cargo->name = $request->name;
+                $cargo->email = $request->email;
+                $cargo->phone = $request->phone;
+                $cargo->gst_number = $request->gstNumber ?? "";
+                $cargo->status = $request->status ?? 1;
                 $cargo->save();
                 $msg = "Cargo created successfully";
             }
@@ -89,19 +89,19 @@ class CargoController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $cargo->name =  $request->name;
+                    $cargo->name = $request->name;
                 }
                 if (!empty($request->email)) {
-                    $cargo->email =  $request->email;
+                    $cargo->email = $request->email;
                 }
                 if (!empty($request->phone)) {
-                    $cargo->phone =  $request->phone;
+                    $cargo->phone = $request->phone;
                 }
                 if (!empty($request->gstNumber)) {
-                    $cargo->gst_number =  $request->gstNumber;
+                    $cargo->gst_number = $request->gstNumber;
                 }
                 if (isset($request->status)) {
-                    $cargo->status =  $request->status;
+                    $cargo->status = $request->status;
                 }
                 $cargo->save();
                 $msg = "Cargo updated successfully";

@@ -189,19 +189,19 @@ class ProductController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $product = new Product();
-                $product->product_name =  $request->productName ?? "";
-                $product->category_id =  $request->category_id ?? 0;
-                $product->list_no =  $request->listNo ?? "";
-                $product->model_no =  $request->modelNo ?? "";
-                $product->indian_product =  $request->indianProduct ?? "";
-                $product->price =  $request->price;
-                $product->ask_price =  $request->askprice;
-                $product->product_type =  $request->productType ?? "";
-                $product->status =  $request->status ?? 1;
-                $product->action_by =  $request->actionBy;
-                $product->packing_name =  $request->tackingName ?? "";
-                $product->product_image =  $request->troductImage ?? "";
-                $product->tax_rate =  $request->tax_rate ?? "";
+                $product->product_name = $request->productName ?? "";
+                $product->category_id = $request->category_id ?? 0;
+                $product->list_no = $request->listNo ?? "";
+                $product->model_no = $request->modelNo ?? "";
+                $product->indian_product = $request->indianProduct ?? "";
+                $product->price = $request->price;
+                $product->ask_price = $request->askprice;
+                $product->product_type = $request->productType ?? "";
+                $product->status = $request->status ?? 1;
+                $product->action_by = $request->actionBy;
+                $product->packing_name = $request->tackingName ?? "";
+                $product->product_image = $request->troductImage ?? "";
+                $product->tax_rate = $request->tax_rate ?? "";
                 $product->product_id = $request->productId;
                 $product->packing = $request->packing ?? '';
                 $product->mc_dimensions = $request->mcDimensions ?? '';
@@ -238,46 +238,46 @@ class ProductController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->product_name)) {
-                    $product->product_name =  $request->product_name;
+                    $product->product_name = $request->product_name;
                 }
                 if (!empty($request->category_id)) {
-                    $product->category_id =  $request->category_id;
+                    $product->category_id = $request->category_id;
                 }
                 if (!empty($request->category_id)) {
-                    $product->YoutubeLink =  $request->youtubeLink;
+                    $product->YoutubeLink = $request->youtubeLink;
                 }
                 if (!empty($request->category_id)) {
-                    $product->list_no =  $request->listNo;
+                    $product->list_no = $request->listNo;
                 }
                 if (!empty($request->category_id)) {
-                    $product->model_no =  $request->modelNo;
+                    $product->model_no = $request->modelNo;
                 }
                 if (!empty($request->category_id)) {
-                    $product->indian_product =  $request->indianProduct;
+                    $product->indian_product = $request->indianProduct;
                 }
                 if (!empty($request->category_id)) {
-                    $product->price =  $request->price;
+                    $product->price = $request->price;
                 }
                 if (!empty($request->askprice)) {
-                    $product->ask_price =  $request->askprice;
+                    $product->ask_price = $request->askprice;
                 }
                 if (!empty($request->productType)) {
-                    $product->product_type =  $request->productType;
+                    $product->product_type = $request->productType;
                 }
                 if (!empty($request->status)) {
-                    $product->status =  $request->status;
+                    $product->status = $request->status;
                 }
                 if (!empty($request->actionBy)) {
-                    $product->action_by =  $request->actionBy;
+                    $product->action_by = $request->actionBy;
                 }
                 if (!empty($request->packingName)) {
-                    $product->packing_name =  $request->packingName;
+                    $product->packing_name = $request->packingName;
                 }
                 if (!empty($request->productImage)) {
-                    $product->product_image =  $request->productImage;
+                    $product->product_image = $request->productImage;
                 }
                 if (!empty($request->tax_rate)) {
-                    $product->tax_rate =  $request->tax_rate;
+                    $product->tax_rate = $request->tax_rate;
                 }
                 if (!empty($request->packing)) {
                     $product->packing = $request->packing;

@@ -66,14 +66,14 @@ class ZonePriceRuleController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $rule = new ZonePriceRule();
-                $rule->rule_name =  $request->ruleName;
-                $rule->zone_id =  $request->zoneId;
-                $rule->category_id =  $request->categoryId ?? 0;
-                $rule->product_id =  $request->productId ?? 0;
-                $rule->product_variant_id =  $request->productVariantId ?? 0;
-                $rule->discount_type =  $request->discountType ?? 'F';
-                $rule->discount =  $request->discount ?? 0;
-                $rule->status =  $request->status ?? 1;
+                $rule->rule_name = $request->ruleName;
+                $rule->zone_id = $request->zoneId;
+                $rule->category_id = $request->categoryId ?? 0;
+                $rule->product_id = $request->productId ?? 0;
+                $rule->product_variant_id = $request->productVariantId ?? 0;
+                $rule->discount_type = $request->discountType ?? 'F';
+                $rule->discount = $request->discount ?? 0;
+                $rule->status = $request->status ?? 1;
                 $rule->save();
                 $msg = "Price rule created successfully";
             }
@@ -98,28 +98,28 @@ class ZonePriceRuleController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->ruleName)) {
-                    $rule->rule_name =  $request->ruleName;
+                    $rule->rule_name = $request->ruleName;
                 }
                 if (isset($request->zoneId)) {
-                    $rule->zone_id =  $request->zoneId;
+                    $rule->zone_id = $request->zoneId;
                 }
                 if (isset($request->categoryId)) {
-                    $rule->category_id =  $request->categoryId;
+                    $rule->category_id = $request->categoryId;
                 }
                 if (isset($request->productId)) {
-                    $rule->product_id =  $request->productId;
+                    $rule->product_id = $request->productId;
                 }
                 if (isset($request->productVariantId)) {
-                    $rule->product_variant_id =  $request->productVariantId;
+                    $rule->product_variant_id = $request->productVariantId;
                 }
                 if (isset($request->discountType)) {
-                    $rule->discount_type =  $request->discountType;
+                    $rule->discount_type = $request->discountType;
                 }
                 if (isset($request->discount)) {
-                    $rule->discount =  $request->discount;
+                    $rule->discount = $request->discount;
                 }
                 if (isset($request->status)) {
-                    $rule->status =  $request->status;
+                    $rule->status = $request->status;
                 }
                 $rule->save();
                 $msg = "Price rule updated successfully";

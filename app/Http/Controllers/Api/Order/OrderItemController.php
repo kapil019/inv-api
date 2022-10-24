@@ -107,8 +107,8 @@ class OrderItemController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 $order = new OrderItem();
-                $order->name =  $request->name;
-                $order->status =  $request->status ?? 1;
+                $order->name = $request->name;
+                $order->status = $request->status ?? 1;
                 $order->save();
                 $msg = "Order created successfully";
             }
@@ -133,10 +133,10 @@ class OrderItemController extends ApiController
                 return $this->respondValidationError($this->ruleMessage, $validator->errors());
             } else {
                 if (!empty($request->name)) {
-                    $order->name =  $request->name;
+                    $order->name = $request->name;
                 }
                 if (isset($request->status)) {
-                    $order->status =  $request->status;
+                    $order->status = $request->status;
                 }
                 $order->save();
                 $msg = "Order updated successfully";
